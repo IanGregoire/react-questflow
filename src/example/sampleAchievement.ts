@@ -1,6 +1,6 @@
-import { Achievement } from "../engine";
+import { type Achievement } from "../engine";
 
-export const sampleAchievements: Achievement[] = [
+export const sampleAchievement: Achievement[] = [
   {
     id: "first-quest",
     title: "First Quest Completed",

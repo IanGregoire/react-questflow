@@ -1,4 +1,4 @@
-import { Quest } from "../engine";
+import { type Quest } from "../engine";
 
 export const sampleQuests: Quest[] = [
   {

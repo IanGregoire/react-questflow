@@ -1,6 +1,6 @@
-import React, { ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 import { QuestFlowContext } from "./QuestFlowContext";
-import { QuestEngine, Quest, Achievement } from "../engine";
+import { QuestEngine, type Quest, type Achievement } from "../engine";
 
 interface Props {
   quests: Quest[];
