@@ -7,7 +7,7 @@ export class QuestEngine {
   level: number = 1;
 
   // XP curve
-  baseXPpForLevel = 100;
+  baseXPForLevel = 100;
   xpGrowth = 1.2 
 
   constructor(quests: Quest[] = [], achievements: Achievement[] = []) {
@@ -48,7 +48,7 @@ export class QuestEngine {
   }
 
   xpForNextLevel():number {
-    return Math.floor(this.baseXPpForLevel * Math.pow(this.xpGrowth, this.level - 1));
+    return Math.floor(this.baseXPForLevel * Math.pow(this.xpGrowth, this.level - 1));
   }
 
   addXP(amount: number) {
