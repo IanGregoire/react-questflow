@@ -4,6 +4,11 @@ export class QuestEngine {
   quests: Quest[];
   achievements: Achievement[];
   xp: number = 0;
+  level: number = 1;
+
+  // XP curve
+  baseXPpForLevel = 100;
+  xpGrowth = 1.2 
 
   constructor(quests: Quest[] = [], achievements: Achievement[] = []) {
     this.quests = quests;
@@ -21,7 +26,7 @@ export class QuestEngine {
     quest.status = "completed";
     quest.progress = 100;
 
-    this.xp += quest.xp;
+    this.addXP(quest.xp);
   }
 
   updateQuestProgress(id: string, progress: number) {
@@ -42,8 +47,25 @@ export class QuestEngine {
     a.unlocked = true;
   }
 
+  xpForNextLevel():number {
+    return Math.floor(this.baseXPpForLevel * Math.pow(this.xpGrowth, this.level - 1));
+  }
+
+  addXP(amount: number) {
+    this.xp += amount;
+
+    while(this.xp >= this.xpForNextLevel()) {
+      this.xp -= this.xpForNextLevel();
+      this.level++;
+    }
+  }
+
   getXP() {
     return this.xp;
+  }
+
+  getLevel() {
+    return this.level;
   }
 
   getAchievements() {

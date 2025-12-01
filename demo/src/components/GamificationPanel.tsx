@@ -1,11 +1,12 @@
 import { useQuestFlow } from "react-questflow";
 
 export default function GamificationPanel() {
-  const { getXP, getAchievements, getQuests } = useQuestFlow();
+  const { getXP, getAchievements, getQuests, getLevel } = useQuestFlow();
 
   const xp = getXP();
   const achievements = getAchievements();
   const quests = getQuests();
+  const level = getLevel();
 
   return (
     <div className="gamification-panel fade-in">
@@ -13,7 +14,7 @@ export default function GamificationPanel() {
 
       {/* XP Display */}
       <div className="xp-section">
-        {/* <p style={{ marginBottom: "0.3rem" }}>Level {level}</p> */}
+        <p style={{ marginBottom: "0.3rem" }}>Level {level}</p>
 
         <div className="xp-bar-container">
           <div

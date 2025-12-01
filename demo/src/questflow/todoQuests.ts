@@ -13,7 +13,7 @@ export const todoQuests: Quest[] = [
     id: "complete_task",
     title: "Complete a task",
     description: "Complete any task",
-    xp: 20,
+    xp: 200,
     status: "available",
     progress: 0,
   },

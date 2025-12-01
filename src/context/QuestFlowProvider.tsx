@@ -19,12 +19,14 @@ export const QuestFlowProvider = ({
 
   // simple state that forces re-render and holds snapshots
   const [xp, setXp] = useState<number>(engine.getXP());
+  const [level, setLevel] = useState<number>(engine.getLevel());
   const [qSnapshot, setQSnapshot] = useState(() => engine.getQuests());
   const [aSnapshot, setASnapshot] = useState(() => engine.getAchievements());
 
   // helper to refresh snapshots from engine
   const refresh = useCallback(() => {
     setXp(engine.getXP());
+    setLevel(engine.getLevel());
     setQSnapshot([...engine.getQuests()]); // shallow copy to change identity
     setASnapshot([...engine.getAchievements()]);
   }, [engine]);
@@ -57,6 +59,7 @@ export const QuestFlowProvider = ({
   const api = useMemo(
     () => ({
       xp,
+      level,
       quests: qSnapshot,
       achievements: aSnapshot,
 
@@ -65,12 +68,13 @@ export const QuestFlowProvider = ({
       unlockAchievement,
 
       getXP: () => engine.getXP(),
+      getLevel: () => engine.getLevel(),
       getQuests: () => engine.getQuests(),
       getAchievements: () => engine.getAchievements(),
 
       engine,
     }),
-    [xp, qSnapshot, aSnapshot, completeQuest, updateQuestProgress, unlockAchievement, engine]
+    [xp, level, qSnapshot, aSnapshot, completeQuest, updateQuestProgress, unlockAchievement, engine]
   );
 
   return <QuestFlowContext.Provider value={api}>{children}</QuestFlowContext.Provider>;

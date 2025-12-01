@@ -4,6 +4,7 @@ import type { QuestEngine } from "../engine/QuestEngine";
 
 export type QuestFlowPlayer = {
   xp: number;
+  level: number;
   quests: Quest[];
   achievements: Achievement[];
 };
@@ -11,6 +12,7 @@ export type QuestFlowPlayer = {
 export type QuestFlowAPI = {
   // snapshot values (reactive)
   xp: number;
+  level: number;
   quests: Quest[];
   achievements: Achievement[];
 
@@ -21,6 +23,7 @@ export type QuestFlowAPI = {
 
   // raw getters if needed
   getXP: () => number;
+  getLevel: () => number;
   getQuests: () => Quest[];
   getAchievements: () => Achievement[];
 
