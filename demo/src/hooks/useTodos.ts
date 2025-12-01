@@ -24,6 +24,7 @@ export function useTodos() {
       id: crypto.randomUUID(),
       text,
       completed: false,
+      completedBefore: 0,
     };
     setTodos((prev) => [...prev, newTodo]);
   };
@@ -31,7 +32,14 @@ export function useTodos() {
   const toggleTodo = (id: string) => {
     setTodos((prev) =>
       prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo.id === id
+          ? {
+              ...todo,
+              completed: !todo.completed,
+              // increment completedBefore when switching from false -> true
+              completedBefore: !todo.completed ? (todo.completedBefore ?? 0) + 1 : todo.completedBefore ?? 0,
+            }
+          : todo
       )
     );
   };
@@ -40,5 +48,7 @@ export function useTodos() {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
-  return { todos, addTodo, toggleTodo, removeTodo };
+  const completedCount = todos.filter(t => t.completed).length;
+  
+  return { todos, addTodo, toggleTodo, removeTodo, completedCount };
 }

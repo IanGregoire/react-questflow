@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuestFlow } from "react-questflow"
 
 interface Props {
     onAdd: (text: string) => void;
@@ -6,11 +7,13 @@ interface Props {
 
 export function TodoInput({ onAdd }: Props) {
     const [text, setText] = useState("");
+    const { completeQuest } = useQuestFlow();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!text.trim()) return;
         onAdd(text);
+        completeQuest("create_task");
         setText("");
     };
 
