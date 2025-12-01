@@ -1,5 +1,4 @@
 import { useQuestFlow } from "react-questflow";
-import "./GamificationPanel.css";
 
 export default function GamificationPanel() {
   const { getXP, getAchievements, getQuests } = useQuestFlow();
@@ -9,53 +8,50 @@ export default function GamificationPanel() {
   const quests = getQuests();
 
   return (
-    <div className="gamification-panel">
-      <h2>Gamification</h2>
+    <div className="gamification-panel fade-in">
+      <h2 style={{ marginBottom: "0.8rem" }}>Gamification</h2>
 
       {/* XP Display */}
-      <div className="xp-box">
-        <strong>XP:</strong> {xp}
+      <div className="xp-section">
+        {/* <p style={{ marginBottom: "0.3rem" }}>Level {level}</p> */}
+
+        <div className="xp-bar-container">
+          <div
+            className="xp-bar-fill"
+            style={{ width: `${xp}%` }}
+          />
+        </div>
       </div>
 
       {/* Quests */}
-      <div className="section">
-        <h3>Active Quests</h3>
-
-        {quests.map((q) => (
-          <div key={q.id} className="quest-item">
-            <div className="quest-title">
-              {q.title} 
-              {q.status === "completed" && <span className="badge completed">✓</span>}
-            </div>
-
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${q.progress}%` }}
-              />
-            </div>
-
-            <small>{q.progress}%</small>
+      <h3 style={{ marginTop: "1.2rem" }}>Quests</h3>
+      {quests.map((q) => (
+        <div key={q.id} className="quest-item fade-in">
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{q.title}</span>
+            <span>{q.progress}%</span>
           </div>
-        ))}
-      </div>
+
+          <div className="quest-progress">
+            <div
+              className="quest-progress-fill"
+              style={{ width: `${q.progress}%` }}
+            />
+          </div>
+        </div>
+      ))}
 
       {/* Achievements */}
-      <div className="section">
-        <h3>Achievements</h3>
-        {achievements.length === 0 && <p>No achievements yet.</p>}
-
-        {achievements.map((a) => (
-          <div key={a.id} className="achievement-item">
-            <span>{a.title}</span>
-            {a.unlocked ? (
-              <span className="badge unlocked">Unlocked</span>
-            ) : (
-              <span className="badge locked">Locked</span>
-            )}
-          </div>
-        ))}
-      </div>
+      {achievements.length > 0 && (
+        <>
+          <h3 style={{ marginTop: "1rem" }}>Achievements</h3>
+          <ul style={{ paddingLeft: "1rem" }}>
+            {achievements.map((a) => (
+              <li key={a.id}>{a.title}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }

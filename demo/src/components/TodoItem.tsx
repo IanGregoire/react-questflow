@@ -28,17 +28,19 @@ export function TodoItem({ todo, onToggle, onRemove }: Props) {
   }, [todo.completed]);
 
   return (
-    <div className="todo-item">
-      <label>
+    <div className="todo-item fade-in">
+      <div className="todo-left">
         <input
           type="checkbox"
           checked={todo.completed}
           onChange={() => onToggle(todo.id)}
         />
-        <span className={todo.completed ? "completed" : ""}>{todo.text}</span>
-      </label>
+        <span className={`todo-text ${todo.completed ? "completed" : ""}`}>\
+          {todo.text}
+        </span>
+      </div>
 
-      <button className="delete" onClick={() => onRemove(todo.id)}>
+      <button className="delete-icon" onClick={() => onRemove(todo.id)}>
         ✕
       </button>
     </div>

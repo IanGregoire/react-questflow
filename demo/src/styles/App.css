@@ -1,42 +1,225 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+/* --------------------------------------------------
+    Chrome-Inspired Minimal Theme
+-------------------------------------------------- */
+
+/* ---------- ROOT VARIABLES ---------- */
+:root {
+  --bg: #f6f6f7;
+  --bg-secondary: #ffffff;
+  --border: #dcdcdc;
+  --border-hover: #c5c5c5;
+  --text: #1a1a1a;
+  --text-light: #555;
+  --primary: #1a73e8;
+  --primary-hover: #1667cf;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.12);
+  --transition: 0.2s ease;
+}
+
+/* DARK MODE */
+.dark {
+  --bg: #1f1f1f;
+  --bg-secondary: #2a2a2a;
+  --border: #3a3a3a;
+  --border-hover: #505050;
+  --text: #ffffff;
+  --text-light: #bcbcbc;
+  --primary: #81b3ff;
+  --primary-hover: #6aa0f0;
+}
+
+/* ---------- GLOBAL RESETS ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
   padding: 2rem;
+}
+
+/* Smooth transitions for theme */
+body, button, input {
+  transition: background var(--transition), color var(--transition), border var(--transition);
+}
+
+.app-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.xp-bar-container {
+  width: 180px;
+  background: var(--bg);
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  height: 10px;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.todo-input-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.todo-input-row input {
+  flex: 1;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.todo-input-row input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.button-primary {
+  padding: 0.6rem 1.1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.button-primary:hover {
+  background: var(--primary-hover);
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-secondary);
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.todo-item:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow);
+}
+
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.todo-text {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  color: var(--text-light);
+}
+
+.fade-in {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.delete-icon {
+  font-size: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.2s ease;
+}
+
+.delete-icon:hover {
+  opacity: 1;
+}
+
+.gamification-panel {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.quest-item {
+  padding: 0.7rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  transition: var(--transition);
+}
+
+.quest-item:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow);
+}
+
+.quest-progress {
+  height: 6px;
+  background: var(--bg);
+  border-radius: 50px;
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+
+.quest-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+
+.empty {
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  color: var(--text-light);
+  padding: 1rem 0;
 }

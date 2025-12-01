@@ -38,9 +38,8 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <h1>To-Do List</h1>
-      <GamificationPanel />
+    <div className="app-container fade-in">
+      <h1 className="fade-in" style={{ marginBottom: '1rem' }}>To-Do List</h1>
 
       <TodoInput onAdd={(text) => {
         addTodo(text);
@@ -49,6 +48,8 @@ function App() {
       }} />
 
       <TodoList todos={todos} onToggle={handleToggle} onRemove={removeTodo} />
+      
+      <GamificationPanel />
     </div>
   );
 }
