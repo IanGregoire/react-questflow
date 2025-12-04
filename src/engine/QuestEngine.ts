@@ -1,18 +1,17 @@
 import type { Quest, Achievement } from "./types";
+import type { XPGrowthFn } from "./xpGrowth";
 
 export class QuestEngine {
   quests: Quest[];
   achievements: Achievement[];
   xp: number = 0;
   level: number = 1;
+  xpGrowthFn: XPGrowthFn;
 
-  // XP curve
-  baseXPForLevel = 100;
-  xpGrowth = 1.2 
-
-  constructor(quests: Quest[] = [], achievements: Achievement[] = []) {
+  constructor(quests: Quest[] = [], achievements: Achievement[] = [], xpGrowthFn: XPGrowthFn) {
     this.quests = quests;
     this.achievements = achievements;
+    this.xpGrowthFn = xpGrowthFn;
   }
 
   getQuests() {
@@ -48,7 +47,7 @@ export class QuestEngine {
   }
 
   xpForNextLevel():number {
-    return Math.floor(this.baseXPForLevel * Math.pow(this.xpGrowth, this.level - 1));
+    return this.xpGrowthFn(this.level);
   }
 
   addXP(amount: number) {

@@ -2,20 +2,24 @@ import { type ReactNode, useMemo, useState, useCallback } from "react";
 import { QuestFlowContext } from "./QuestFlowContext";
 import { QuestEngine } from "../engine/QuestEngine";
 import type { Quest, Achievement } from "../engine/types";
+import { defaultXPGrowth } from "../engine/xpGrowthConfig";
+import type { XPGrowthFn } from "../engine/xpGrowth";
 
 interface Props {
   quests?: Quest[];
   achievements?: Achievement[];
+  xpGrowth?: XPGrowthFn;
   children: ReactNode;
 }
 
 export const QuestFlowProvider = ({
   quests = [],
   achievements = [],
+  xpGrowth = defaultXPGrowth,
   children,
 }: Props) => {
   // create engine once (but we will wrap its methods)
-  const engine = useMemo(() => new QuestEngine(quests, achievements), []);
+  const engine = useMemo(() => new QuestEngine(quests, achievements, xpGrowth), []);
 
   // simple state that forces re-render and holds snapshots
   const [xp, setXp] = useState<number>(engine.getXP());
