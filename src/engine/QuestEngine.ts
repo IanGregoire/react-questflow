@@ -1,3 +1,4 @@
+import { exponentialScaling, linearScaling } from "./scalingPresets";
 import type { Quest, Achievement } from "./types";
 import type { XPGrowthFn } from "./xpGrowth";
 
@@ -19,14 +20,52 @@ export class QuestEngine {
   }
 
   completeQuest(id: string) {
-    const quest = this.quests.find(q => q.id === id);
-    if (!quest || quest.status === "completed") return;
+  const quest = this.quests.find(q => q.id === id);
+  if (!quest) return;
 
-    quest.status = "completed";
-    quest.progress = 100;
-
-    this.addXP(quest.xp);
+  // Prevent re-completion unless repeatable
+  if (quest.status === "completed" && quest.repeatable === "none") {
+    return;
   }
+
+  // 🔄 Handle repeatable quests (reset if needed)
+  if (quest.repeatable && quest.repeatable !== "none") {
+    const now = Date.now();
+    const last = quest.lastCompletedAt ?? 0;
+
+    if (!this.isRepeatableAvailable(quest.repeatable, last, now)) {
+      return; // can't complete again yet
+    }
+  }
+
+  quest.status = "completed";
+  quest.progress = 100;
+
+  // Track completions
+  quest.timesCompleted = (quest.timesCompleted ?? 0) + 1;
+  quest.lastCompletedAt = Date.now();
+
+  // 🔥 XP Scaling logic
+  let rewardXP = quest.xp;
+
+  if (quest.scaling?.enabled) {
+    const t = quest.timesCompleted - 1; // times before this completion
+
+    if (quest.scaling.strategy === "linear") {
+      rewardXP = linearScaling(quest.xp, t);
+    }
+    else if (quest.scaling.strategy === "exponential") {
+      rewardXP = exponentialScaling(quest.xp, t);
+    }
+    else if (quest.scaling.strategy === "custom" && quest.scaling.scaleFn) {
+      rewardXP = quest.scaling.scaleFn(quest.xp, t);
+    }
+  }
+
+  // Add XP to engine / adjusts levels automatically
+  this.addXP(rewardXP);
+}
+
 
   updateQuestProgress(id: string, progress: number) {
     const quest = this.quests.find(q => q.id === id);
@@ -70,4 +109,32 @@ export class QuestEngine {
   getAchievements() {
     return this.achievements;
   }
+  
+  private isRepeatableAvailable(
+  repeatable: "daily" | "weekly" | "monthly",
+  last: number,
+  now: number
+) {
+  const ONE_DAY = 1000 * 60 * 60 * 24;
+
+  switch (repeatable) {
+    case "daily":
+      return now - last >= ONE_DAY;
+
+    case "weekly":
+      return now - last >= ONE_DAY * 7;
+
+    case "monthly":
+      const lastDate = new Date(last);
+      const nowDate = new Date(now);
+      return (
+        nowDate.getFullYear() !== lastDate.getFullYear() ||
+        nowDate.getMonth() !== lastDate.getMonth()
+      );
+
+    default:
+      return true;
+  }
 }
+}
+
